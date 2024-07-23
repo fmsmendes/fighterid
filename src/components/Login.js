@@ -1,37 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaUser, FaLock } from 'react-icons/fa';
+import { FaUser, FaLock, FaExclamationCircle } from 'react-icons/fa';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here we're simulating a successful login for any username/password combination
-    console.log('Login attempt with:', { username, password });
-    // Set isLoggedIn flag in localStorage
-    localStorage.setItem('isLoggedIn', 'true');
-    // Redirect to dashboard after successful login
-    navigate('/');
+    // Check for default user credentials
+    if (username === 'defaultuser' && password === 'password123') {
+      console.log('Login successful');
+      localStorage.setItem('isLoggedIn', 'true');
+      navigate('/');
+    } else {
+      setError('Invalid username or password');
+    }
   };
 
-  // Check if user is already logged in
-  React.useEffect(() => {
+  useEffect(() => {
     if (localStorage.getItem('isLoggedIn') === 'true') {
       navigate('/');
     }
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+        <h2 className="mt-6 text-center text-4xl font-extrabold text-white">Welcome to FitherID</h2>
+        <p className="mt-2 text-center text-xl text-gray-200">Sign in to your account</p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          {error && (
+            <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <strong className="font-bold">Error!</strong>
+              <span className="block sm:inline"> {error}</span>
+            </div>
+          )}
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700">
@@ -106,6 +115,19 @@ function Login() {
               </Link>
             </div>
           </div>
+        </div>
+      </div>
+      
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-4 px-4 shadow sm:rounded-lg sm:px-10">
+          <p className="text-center text-sm text-gray-600">
+            <FaExclamationCircle className="inline-block mr-1 text-yellow-500" />
+            For demo purposes, use the following credentials:
+          </p>
+          <p className="text-center text-sm font-medium text-gray-800">
+            Username: defaultuser<br />
+            Password: password123
+          </p>
         </div>
       </div>
     </div>

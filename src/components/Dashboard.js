@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome, FaUserFriends, FaComments, FaTrophy, FaCalendarAlt, FaUser, FaBell, FaEnvelope, FaSearch, FaThumbsUp, FaComment, FaShare, FaReply } from 'react-icons/fa';
+import { FaHome, FaUserFriends, FaComments, FaTrophy, FaCalendarAlt, FaUser, FaBell, FaEnvelope, FaSearch, FaThumbsUp, FaComment, FaShare, FaReply, FaBars } from 'react-icons/fa';
 import { GiBoxingGlove, GiNinjaMask } from 'react-icons/gi';
 import Notifications from './Notifications';
 
@@ -8,6 +8,7 @@ function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [newPost, setNewPost] = useState('');
   const [expandedComments, setExpandedComments] = useState({});
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [posts, setPosts] = useState([
     {
       id: 1,
@@ -156,7 +157,7 @@ function Dashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
           <div className="flex items-center">
             <img className="h-8 w-auto" src="/logo.png" alt="FitherID" />
-            <div className="ml-4 relative">
+            <div className="ml-4 relative hidden md:block">
               <input 
                 type="text" 
                 placeholder="Search fighters, gyms, events..." 
@@ -167,29 +168,48 @@ function Dashboard() {
               <FaSearch className="absolute left-3 top-3 text-gray-400" />
             </div>
           </div>
-          <nav className="flex items-center space-x-4">
-  <Link to="/" className="text-gray-600 hover:text-gray-900 flex items-center"><FaHome className="mr-1" /> Home</Link>
-  <Link to="/fight-network" className="text-gray-600 hover:text-gray-900 flex items-center"><FaUserFriends className="mr-1" /> Network</Link>
-  <Link to="/forums" className="text-gray-600 hover:text-gray-900 flex items-center"><FaComments className="mr-1" /> Forums</Link>
-  <Link to="/events" className="text-gray-600 hover:text-gray-900 flex items-center"><FaCalendarAlt className="mr-1" /> Events</Link>
-  <Link to="/profile" className="text-gray-600 hover:text-gray-900 flex items-center"><FaUser className="mr-1" /> Profile</Link>
-  <Link to="/notifications" className="text-gray-600 hover:text-gray-900 relative">
-    <FaBell />
-    <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">3</span>
-  </Link>
-  <Link to="/messaging" className="text-gray-600 hover:text-gray-900 relative">
-    <FaEnvelope />
-    <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">2</span>
-  </Link>
-</nav>
+          <nav className="hidden md:flex items-center space-x-4">
+            <Link to="/" className="text-gray-600 hover:text-gray-900 flex items-center"><FaHome className="mr-1" /> Home</Link>
+            <Link to="/fight-network" className="text-gray-600 hover:text-gray-900 flex items-center"><FaUserFriends className="mr-1" /> Network</Link>
+            <Link to="/forums" className="text-gray-600 hover:text-gray-900 flex items-center"><FaComments className="mr-1" /> Forums</Link>
+            <Link to="/events" className="text-gray-600 hover:text-gray-900 flex items-center"><FaCalendarAlt className="mr-1" /> Events</Link>
+            <Link to="/profile" className="text-gray-600 hover:text-gray-900 flex items-center"><FaUser className="mr-1" /> Profile</Link>
+            <Link to="/notifications" className="text-gray-600 hover:text-gray-900 relative">
+              <FaBell />
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">3</span>
+            </Link>
+            <Link to="/messaging" className="text-gray-600 hover:text-gray-900 relative">
+              <FaEnvelope />
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">2</span>
+            </Link>
+          </nav>
+          <button 
+            className="md:hidden text-gray-600 hover:text-gray-900"
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+          >
+            <FaBars />
+          </button>
         </div>
+        {showMobileMenu && (
+          <div className="md:hidden bg-white border-t border-gray-200">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              <Link to="/" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Home</Link>
+              <Link to="/fight-network" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Network</Link>
+              <Link to="/forums" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Forums</Link>
+              <Link to="/events" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Events</Link>
+              <Link to="/profile" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Profile</Link>
+              <Link to="/notifications" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Notifications</Link>
+              <Link to="/messaging" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Messages</Link>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Main content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="flex space-x-4">
+        <div className="flex flex-col md:flex-row md:space-x-4">
           {/* Left column */}
-          <div className="w-1/4">
+          <div className="w-full md:w-1/4 mb-4 md:mb-0">
             <div className="bg-white shadow rounded-lg p-4 mb-4">
               <img className="h-24 w-24 rounded-full mx-auto mb-4" src="/assets/amanda-nunes-profile.jpg" alt="Amanda Nunes" />
               <h2 className="text-center text-xl font-bold">Amanda "The Lioness" Nunes</h2>
@@ -235,7 +255,7 @@ function Dashboard() {
           </div>
 
           {/* Middle column */}
-          <div className="w-1/2">
+          <div className="w-full md:w-1/2 mb-4 md:mb-0">
             <div className="bg-white shadow rounded-lg p-4 mb-4">
               <form onSubmit={handlePostSubmit}>
                 <textarea 
@@ -244,11 +264,11 @@ function Dashboard() {
                   value={newPost}
                   onChange={(e) => setNewPost(e.target.value)}
                 ></textarea>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <button type="button" className="text-gray-600 hover:text-gray-900 mr-2"><FaCalendarAlt /> Event</button>
-                    <button type="button" className="text-gray-600 hover:text-gray-900 mr-2"><GiBoxingGlove /> Training</button>
-                    <button type="button" className="text-gray-600 hover:text-gray-900"><GiNinjaMask /> Technique</button>
+                <div className="flex flex-wrap justify-between items-center">
+                  <div className="space-x-2 mb-2 sm:mb-0">
+                    <button type="button" className="text-gray-600 hover:text-gray-900"><FaCalendarAlt className="inline mr-1" /> Event</button>
+                    <button type="button" className="text-gray-600 hover:text-gray-900"><GiBoxingGlove className="inline mr-1" /> Training</button>
+                    <button type="button" className="text-gray-600 hover:text-gray-900"><GiNinjaMask className="inline mr-1" /> Technique</button>
                   </div>
                   <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300">Post</button>
                 </div>
@@ -322,27 +342,27 @@ function Dashboard() {
         </div>
 
         {/* Right column */}
-        <div className="w-1/4">
-            <div className="bg-white shadow rounded-lg p-4 mb-4">
-              <h3 className="font-bold mb-2">Upcoming Events</h3>
-              <div className="mb-2">
-                <p className="font-semibold">UFC 300</p>
-                <p className="text-sm text-gray-500">July 15, 2023 - Las Vegas, NV</p>
-              </div>
-              <div>
-                <p className="font-semibold">Bellator 290</p>
-                <p className="text-sm text-gray-500">August 5, 2023 - Los Angeles, CA</p>
-              </div>
+        <div className="w-full md:w-1/4">
+          <div className="bg-white shadow rounded-lg p-4 mb-4">
+            <h3 className="font-bold mb-2">Upcoming Events</h3>
+            <div className="mb-2">
+              <p className="font-semibold">UFC 300</p>
+              <p className="text-sm text-gray-500">July 15, 2023 - Las Vegas, NV</p>
             </div>
-            <div className="bg-white shadow rounded-lg p-4">
-              <h3 className="font-bold mb-2">Training Tips</h3>
-              <p className="text-sm mb-2">1. Always warm up properly before intense training.</p>
-              <p className="text-sm mb-2">2. Focus on technique before power in striking drills.</p>
-              <p className="text-sm">3. Stay hydrated throughout your training sessions.</p>
+            <div>
+              <p className="font-semibold">Bellator 290</p>
+              <p className="text-sm text-gray-500">August 5, 2023 - Los Angeles, CA</p>
             </div>
           </div>
+          <div className="bg-white shadow rounded-lg p-4">
+            <h3 className="font-bold mb-2">Training Tips</h3>
+            <p className="text-sm mb-2">1. Always warm up properly before intense training.</p>
+            <p className="text-sm mb-2">2. Focus on technique before power in striking drills.</p>
+            <p className="text-sm">3. Stay hydrated throughout your training sessions.</p>
+          </div>
         </div>
-      </main>
+      </div>
+    </main>
     </div>
   );
 }
